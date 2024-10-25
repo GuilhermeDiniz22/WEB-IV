@@ -1,0 +1,14 @@
+version: "3"
+services:
+   db:
+     image: postgres:9.6  # Especificando a versão 9.6 do PostgreSQL
+     restart: always
+     environment:
+       POSTGRES_PASSWORD: admin  # Senha do superusuário
+       POSTGRES_DB: oxefood      # Nome do banco de dados a ser criado
+       POSTGRES_HOST_AUTH_METHOD: trust  # Permitir conexões sem senha (apenas para testes)
+     ports:
+       - 5432:5432                # Mapeamento de portas
+     volumes:
+       - ./postgres-data:/var/lib/postgresql/data  # Localização padrão do PostgreSQL
+
