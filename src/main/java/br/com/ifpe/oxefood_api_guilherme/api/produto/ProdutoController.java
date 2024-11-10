@@ -1,5 +1,6 @@
 package br.com.ifpe.oxefood_api_guilherme.api.produto;
 
+import br.com.ifpe.oxefood_api_guilherme.api.cliente.ClienteRequest;
 import br.com.ifpe.oxefood_api_guilherme.modelo.cliente.Cliente;
 import br.com.ifpe.oxefood_api_guilherme.modelo.produto.Produto;
 import br.com.ifpe.oxefood_api_guilherme.modelo.produto.ProdutoService;
@@ -34,4 +35,12 @@ public class ProdutoController {
         Produto produto = produtoService.save(request.build());
         return new ResponseEntity<Produto>(produto, HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody ProdutoRequest request) {
+
+        produtoService.update(id, request.build());
+        return ResponseEntity.ok().build();
+    }
+
 }

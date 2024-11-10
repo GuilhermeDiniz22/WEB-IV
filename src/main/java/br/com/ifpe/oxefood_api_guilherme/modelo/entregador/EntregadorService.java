@@ -23,6 +23,27 @@ public class EntregadorService {
         return entregadorRepository.save(entregador);
     }
 
+    @Transactional
+    public void update(Long id, Entregador entregadorAlterado){
+        Entregador entregador =  entregadorRepository.findById(id).get();
+        entregador.setNome(entregadorAlterado.getNome());
+        entregador.setCpf(entregadorAlterado.getCpf());
+        entregador.setRg(entregadorAlterado.getRg());
+        entregador.setDataNascimento(entregadorAlterado.getDataNascimento());
+        entregador.setFoneCelular(entregador.getFoneCelular());
+        entregador.setFoneFixo(entregador.getFoneFixo());
+        entregador.setQtdEntregasRealizadas(entregadorAlterado.getQtdEntregasRealizadas());
+        entregador.setValorFrete(entregadorAlterado.getValorFrete());
+        entregador.setEnderecoNumero(entregador.getEnderecoNumero());
+        entregador.setEnderecoBairro(entregador.getEnderecoBairro());
+        entregador.setEnderecoBairro(entregadorAlterado.getEnderecoBairro());
+        entregador.setEnderecoCidade(entregador.getEnderecoCidade());
+        entregador.setEnderecoCep(entregadorAlterado.getEnderecoCep());
+        entregador.setEnderecoUf(entregador.getEnderecoUf());
+
+        entregadorRepository.save(entregador);
+    }
+
     public List<Entregador> listarTodos() {
         return entregadorRepository.findAll();
     }

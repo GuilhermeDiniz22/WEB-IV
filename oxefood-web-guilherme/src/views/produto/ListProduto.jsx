@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button, Container, Divider, Icon, Table } from 'semantic-ui-react';
 import MenuSistema from '../../MenuSistema';
 
-export default function ListCliente () {
+export default function ListProduto () {
 
    const [lista, setLista] = useState([]);
 
@@ -14,7 +14,7 @@ export default function ListCliente () {
 
    function carregarLista() {
 
-       axios.get("http://localhost:8080/api/cliente")
+       axios.get("http://localhost:8080/api/produto")
        .then((response) => {
            setLista(response.data)
        })
@@ -30,12 +30,12 @@ export default function ListCliente () {
 }
 return(
     <div>
-        <MenuSistema tela={'cliente'} />
+        <MenuSistema tela={'produto'} />
         <div style={{marginTop: '3%'}}>
 
             <Container textAlign='justified' >
 
-                <h2> Cliente </h2>
+                <h2> Produto </h2>
                 <Divider />
 
                 <div style={{marginTop: '4%'}}>
@@ -46,7 +46,7 @@ return(
                         icon='clipboard outline'
                         floated='right'
                         as={Link}
-                        to='/form-cliente'
+                        to='/form-produto'
                     />
 <br/><br/><br/>
                   
@@ -54,36 +54,37 @@ return(
 
                       <Table.Header>
                           <Table.Row>
-                              <Table.HeaderCell>Nome</Table.HeaderCell>
-                              <Table.HeaderCell>CPF</Table.HeaderCell>
-                              <Table.HeaderCell>Data de Nascimento</Table.HeaderCell>
-                              <Table.HeaderCell>Fone Celular</Table.HeaderCell>
-                              <Table.HeaderCell>Fone Fixo</Table.HeaderCell>
+                              <Table.HeaderCell>Codigo</Table.HeaderCell>
+                              <Table.HeaderCell>Titulo</Table.HeaderCell>
+                              <Table.HeaderCell>Descriçãoo</Table.HeaderCell>
+                              <Table.HeaderCell>Valor Unitário</Table.HeaderCell>
+                              <Table.HeaderCell>Tempo de entrega mínimo</Table.HeaderCell>
+                              <Table.HeaderCell>Tempo de entrega máximo</Table.HeaderCell>
                               <Table.HeaderCell textAlign='center'>Ações</Table.HeaderCell>
                           </Table.Row>
                       </Table.Header>
                  
                       <Table.Body>
 
-                          { lista.map(cliente => (
+                          { lista.map(produto => (
 
-                              <Table.Row key={cliente.id}>
-                                  <Table.Cell>{cliente.nome}</Table.Cell>
-                                  <Table.Cell>{cliente.cpf}</Table.Cell>
-                                  <Table.Cell>{formatarData(cliente.dataNascimento)}</Table.Cell>
-                                  <Table.Cell>{cliente.foneCelular}</Table.Cell>
-                                  <Table.Cell>{cliente.foneFixo}</Table.Cell>
+                              <Table.Row key={produto.id}>
+                                  <Table.Cell>{produto.codigo}</Table.Cell>
+                                  <Table.Cell>{produto.titulo}</Table.Cell>
+                                  <Table.Cell>{produto.descricao}</Table.Cell>
+                                  <Table.Cell>{produto.valorUnitario}</Table.Cell>
+                                  <Table.Cell>{produto.tempoEntregaMinimo}</Table.Cell>
+                                  <Table.Cell>{produto.tempoEntregaMaximo}</Table.Cell>
                                   <Table.Cell textAlign='center'>
 
-                                  <Button
-                                    inverted
-                                    circular
-                                    color='green'
-                                    title='Clique aqui para editar os dados deste cliente'
-                                    icon>
-                                        <Link to="/form-cliente" state={{id: cliente.id}} style={{color: 'green'}}> <Icon name='edit' /> </Link>
-                                </Button>
- &nbsp;
+                                      <Button
+                                          inverted
+                                          circular
+                                          color='green'
+                                          title='Clique aqui para editar os dados deste produto'
+                                          icon>
+                                               <Icon name='edit' />
+                                      </Button> &nbsp;
                                       <Button
                                                inverted
                                                circular

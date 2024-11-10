@@ -1,54 +1,54 @@
+import React, { useState } from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
 import MenuSistema from "../../MenuSistema";
+import { Link } from "react-router-dom";
 
-export default function FormCliente () {
+export default function FormProduto () {
 
-   const [nome, setNome] = useState();
-   const [cpf, setCpf] = useState();
-   const [dataNascimento, setDataNascimento] = useState();
-   const [foneCelular, setFoneCelular] = useState();
-   const [foneFixo, setFoneFixo] = useState();
+   const [codigo, setCodigo] = useState();
+   const [titulo, setTitulo] = useState();
+   const [descricao, setDescricao] = useState();
+   const [valorUnitario, setvalorUnitario] = useState();
+   const [tempoEntregaMinimo, settempoEntregaMinimo] = useState();
+   const [tempoEntregaMaximo, settempoEntregaMaximo] = useState();
 
    useEffect(() => {
-        if (state != null && state.id != null) {
-            axios.get("http://localhost:8080/api/cliente/" + state.id)
-        .then((response) => {
-                       setIdCliente(response.data.id)
-                       setNome(response.data.nome)
-                       setCpf(response.data.cpf)
-                       setDataNascimento(response.data.dataNascimento)
-                       setFoneCelular(response.data.foneCelular)
-                       setFoneFixo(response.data.foneFixo)
-        })
-    }
+    if (state != null && state.id != null) {
+        axios.get("http://localhost:8080/api/produto/" + state.id)
+    .then((response) => {
+                   setIdProduto(response.data.id)
+                   setCodigo(response.data.codigo)
+                   setTitulo(response.data.titulo)
+                   setDescricao(response.data.descricao)
+                   setvalorUnitario(response.data.valorUnitario)
+                   settempoEntregaMinimo(response.data.tempoEntregaMinimo)
+                   settempoEntregaMaximo(response.data.tempoEntregaMaximo)
+    })
+}
 }, [state])
-
 
    function salvar() {
 
-    let clienteRequest = {
-        nome: nome,
-        cpf: cpf,
-        dataNascimento: dataNascimento,
-        foneCelular: foneCelular,
-        foneFixo: foneFixo
+    let produtoRequest = {
+        codigo: codigo,
+         titulo: titulo,
+         descricao: descricao,
+         valorUnitario: valorUnitario,
+         tempoEntregaMinimo: tempoEntregaMinimo,
+         tempoEntregaMaximo : tempoEntregaMaximo
     }
 
-    if (idCliente != null) { //Alteração:
-        axios.put("http://localhost:8080/api/cliente/" + idCliente, clienteRequest)
+    if (idProduto != null) { //Alteração:
+        axios.put("http://localhost:8080/api/produto/" + idProduto, produtoRequest)
         .then((response) => { console.log('Cliente alterado com sucesso.') })
         .catch((error) => { console.log('Erro ao alter um cliente.') })
     } else { //Cadastro:
-        axios.post("http://localhost:8080/api/cliente", clienteRequest)
+        axios.post("http://localhost:8080/api/produto", produtoRequest)
         .then((response) => { console.log('Cliente cadastrado com sucesso.') })
         .catch((error) => { console.log('Erro ao incluir o cliente.') })
     }
-
-}
 
 
 
@@ -56,22 +56,20 @@ export default function FormCliente () {
 
         <div>
 
-        <MenuSistema tela={'cliente'} />
+        <MenuSistema tela={'produto'} />
 
             <div style={{marginTop: '3%'}}>
 
             <Container textAlign='justified' >
 
-                { idCliente === undefined &&
-                    <h2> <span style={{color: 'darkgray'}}> Cliente &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro</h2>
-                }
-                { idCliente != undefined &&
-                    <h2> <span style={{color: 'darkgray'}}> Cliente &nbsp;<Icon name='angle double right' size="small" /> </span> Alteração</h2>
-                }
+            { idProduto === undefined &&
+                <h2> <span style={{color: 'darkgray'}}> Produto &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro</h2>
+            }
+            { idProduto != undefined &&
+                <h2> <span style={{color: 'darkgray'}}> Produto &nbsp;<Icon name='angle double right' size="small" /> </span> Alteração</h2>
+            }
 
             <Divider />
-
-
                     <div style={{marginTop: '4%'}}>
 
                         <Form>
@@ -81,22 +79,21 @@ export default function FormCliente () {
                                 <Form.Input
                                     required
                                     fluid
-                                    label='Nome'
+                                    label='Codigo'
                                     maxLength="100"
-                                    value={nome}
-			                        onChange={e => setNome(e.target.value)}
+                                    value={codigo}
+			                        onChange={e => setCodigo(e.target.value)}
 
                                 />
 
                                 <Form.Input
                                     required
                                     fluid
-                                    label='CPF'>
+                                    label='Titulo'>
                                     <InputMask
                                         required
-                                        mask="999.999.999-99"
-                                        value={cpf}
-				                        onChange={e => setCpf(e.target.value)}
+                                        value={titulo}
+				                        onChange={e => setTitulo(e.target.value)}
                                     /> 
                                 </Form.Input>
 
@@ -106,37 +103,45 @@ export default function FormCliente () {
 
                                 <Form.Input
                                     fluid
-                                    label='Fone Celular'
+                                    label='Descrição'
                                     width={6}>
                                     <InputMask 
-                                        mask="(99) 9999.9999"
-                                        value={foneCelular}
-				                        onChange={e => setFoneCelular(e.target.value)}
+                                        value={descricao}
+				                        onChange={e => setDescricao(e.target.value)}
                                     /> 
                                 </Form.Input>
 
                                 <Form.Input
                                     fluid
-                                    label='Fone Fixo'
+                                    label='Valor Unitário'
                                     width={6}>
                                     <InputMask 
-                                        mask="(99) 9999.9999"
-                                        value={foneFixo}
-				                        onChange={e => setFoneFixo(e.target.value)}
+                                        value={valorUnitario}
+				                        onChange={e => setvalorUnitario(e.target.value)}
                                     /> 
                                 </Form.Input>
 
                                 <Form.Input
                                     fluid
-                                    label='Data Nascimento'
+                                    label='Tempo de Entrega Mínimo'
+                                    type="number"
                                     width={6}
                                 >
                                     <InputMask 
-                                        mask="99/99/9999" 
-                                        maskChar={null}
-                                        placeholder="Ex: 20/03/1985"
-                                        value={dataNascimento}
-				                        onChange={e => setDataNascimento(e.target.value)}
+                                        value={tempoEntregaMinimo}
+				                        onChange={e => settempoEntregaMinimo(e.target.value)}
+                                    /> 
+                                </Form.Input>
+
+                                <Form.Input
+                                    fluid
+                                    label='Tempo de Entrega Máximo'
+                                    type="number"
+                                    width={6}
+                                >
+                                    <InputMask 
+                                        value={tempoEntregaMaximo}
+				                        onChange={e => settempoEntregaMaximo(e.target.value)}
                                     /> 
                                 </Form.Input>
 
@@ -155,7 +160,7 @@ export default function FormCliente () {
                                 color='orange'
                             >
                             <Icon name='reply' />
-                                <Link to={'/list-cliente'}>Voltar</Link>
+                                <Link to={'/list-produto'}>Voltar</Link>
                             </Button>
                                 
                             <Button
@@ -181,4 +186,5 @@ export default function FormCliente () {
 
     );
 
+}
 }
