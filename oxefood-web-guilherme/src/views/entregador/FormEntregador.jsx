@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 import MenuSistema from "../../MenuSistema";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function FormEntregador () {
 
@@ -19,6 +19,8 @@ export default function FormEntregador () {
    const [enderecoCidade, setenderecoCidade] = useState();
    const [enderecoCep, setenderecoCep] = useState();
    const [enderecoUf, setenderecoUf] = useState();
+   const { state } = useLocation();
+   const [idEntregador, setIdEntregador] = useState();
 
    useEffect(() => {
     if (state != null && state.id != null) {
@@ -30,7 +32,7 @@ export default function FormEntregador () {
                    setRg(response.data.rg)
                    setfoneCelular(response.data.foneCelular)
                    setqtdEntregasRealizadas(response.data.qtdEntregasRealizadas)
-                   setDataNascimento(response.data.dataNascimento)
+                   setdataNascimento(formatarData(response.data.dataNascimento))
                    setvalorFrente(response.data.valorFrete)
                    setenderecoBairro(response.data.enderecoBairro)
                    setenderecoCep(response.data.enderecoCep)
@@ -70,6 +72,16 @@ export default function FormEntregador () {
     }
 }
 
+function formatarData(dataParam) {
+
+    if (dataParam === null || dataParam === '' || dataParam === undefined) {
+        return ''
+    }
+
+    let arrayData = dataParam.split('-');
+    return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
+}
+
 
 
     return (
@@ -82,10 +94,10 @@ export default function FormEntregador () {
 
             <Container textAlign='justified' >
 
-                { idCliente === undefined &&
+                { idEntregador === undefined &&
                     <h2> <span style={{color: 'darkgray'}}> Entregador &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro</h2>
                 }
-                { idCliente != undefined &&
+                { idEntregador != undefined &&
                     <h2> <span style={{color: 'darkgray'}}> Entregador &nbsp;<Icon name='angle double right' size="small" /> </span> Alteração</h2>
                 }
 
@@ -127,7 +139,7 @@ export default function FormEntregador () {
                                     fluid
                                     label='RG'
                                     mask="9.999.999"
-                                    width={6}>
+                                    width={4}>
                                     <InputMask 
                                         value={rg}
 				                        onChange={e => setRg(e.target.value)}
@@ -137,7 +149,7 @@ export default function FormEntregador () {
                                 <Form.Input
                                     fluid
                                     label='Data Nascimento'
-                                    width={6}>
+                                    width={4}>
                                     <InputMask 
                                         mask="99/99/9999" 
                                         maskChar={null}
@@ -150,7 +162,7 @@ export default function FormEntregador () {
                                 <Form.Input
                                     fluid
                                     label='Fone Celular'
-                                    width={6}
+                                    width={4}
                                 >
                                     <InputMask 
                                         mask="(99) 9999.9999"
@@ -162,18 +174,19 @@ export default function FormEntregador () {
                                 <Form.Input
                                     fluid
                                     label='Quantidade Entregas'
-                                    width={6}
+                                    width={4}
+                                    type="number"
+                                    value={qtdEntregasRealizadas}
+				                    onChange={e => setqtdEntregasRealizadas(e.target.value)}
                                 >
-                                    <InputMask 
-                                        value={qtdEntregasRealizadas}
-				                        onChange={e => setqtdEntregasRealizadas(e.target.value)}
-                                    /> 
+                            
+                                    
                                 </Form.Input>
 
                                 <Form.Input
                                     fluid
                                     label='Valor Frete'
-                                    width={6}
+                                    width={4}
                                 >
                                     <InputMask 
                                         value={valorFrete}
@@ -184,7 +197,7 @@ export default function FormEntregador () {
                                 <Form.Input
                                     fluid
                                     label='Endereço Numero'
-                                    width={6}
+                                    width={4}
                                 >
                                     <InputMask 
                                         value={enderecoNumero}
@@ -195,7 +208,7 @@ export default function FormEntregador () {
                                 <Form.Input
                                     fluid
                                     label='Endereço Bairro'
-                                    width={6}
+                                    width={4}
                                 >
                                     <InputMask 
                                         value={enderecoBairro}

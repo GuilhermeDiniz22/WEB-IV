@@ -13,19 +13,24 @@ export default function FormCliente () {
    const [foneCelular, setFoneCelular] = useState();
    const [foneFixo, setFoneFixo] = useState();
 
-   useEffect(() => {
-        if (state != null && state.id != null) {
-            axios.get("http://localhost:8080/api/cliente/" + state.id)
-        .then((response) => {
-                       setIdCliente(response.data.id)
-                       setNome(response.data.nome)
-                       setCpf(response.data.cpf)
-                       setDataNascimento(response.data.dataNascimento)
-                       setFoneCelular(response.data.foneCelular)
-                       setFoneFixo(response.data.foneFixo)
-        })
-    }
-}, [state])
+   const { state } = useLocation();
+   const [idCliente, setIdCliente] = useState();
+
+        useEffect(() => {
+                    if (state != null && state.id != null) {
+
+                        axios.get("http://localhost:8080/api/cliente/" + state.id)
+                        .then((response) => {
+                                                    setIdCliente(response.data.id)
+                                                    setNome(response.data.nome)
+                                                    setCpf(response.data.cpf)
+                                                    setDataNascimento(formatarData(response.data.dataNascimento))
+                                                    setFoneCelular(response.data.foneCelular)
+                                                    setFoneFixo(response.data.foneFixo)
+                                        })
+                                    }
+                            }, [state])
+
 
 
    function salvar() {
@@ -37,6 +42,7 @@ export default function FormCliente () {
         foneCelular: foneCelular,
         foneFixo: foneFixo
     }
+    console.log(clienteRequest)
 
     if (idCliente != null) { //Alteração:
         axios.put("http://localhost:8080/api/cliente/" + idCliente, clienteRequest)
@@ -48,6 +54,16 @@ export default function FormCliente () {
         .catch((error) => { console.log('Erro ao incluir o cliente.') })
     }
 
+}
+
+function formatarData(dataParam) {
+
+    if (dataParam === null || dataParam === '' || dataParam === undefined) {
+        return ''
+    }
+
+    let arrayData = dataParam.split('-');
+    return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
 }
 
 

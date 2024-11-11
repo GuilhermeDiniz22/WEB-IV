@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 import MenuSistema from "../../MenuSistema";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function FormProduto () {
 
@@ -13,6 +13,9 @@ export default function FormProduto () {
    const [valorUnitario, setvalorUnitario] = useState();
    const [tempoEntregaMinimo, settempoEntregaMinimo] = useState();
    const [tempoEntregaMaximo, settempoEntregaMaximo] = useState();
+
+   const { state } = useLocation();
+   const [idProduto, setIdProduto] = useState();
 
    useEffect(() => {
     if (state != null && state.id != null) {
@@ -40,7 +43,7 @@ export default function FormProduto () {
          tempoEntregaMaximo : tempoEntregaMaximo
     }
 
-    if (idProduto != null) { //Alteração:
+    if (idProduto !== null) { //Alteração:
         axios.put("http://localhost:8080/api/produto/" + idProduto, produtoRequest)
         .then((response) => { console.log('Cliente alterado com sucesso.') })
         .catch((error) => { console.log('Erro ao alter um cliente.') })
@@ -50,7 +53,7 @@ export default function FormProduto () {
         .catch((error) => { console.log('Erro ao incluir o cliente.') })
     }
 
-
+}
 
     return (
 
@@ -125,24 +128,22 @@ export default function FormProduto () {
                                     fluid
                                     label='Tempo de Entrega Mínimo'
                                     type="number"
-                                    width={6}
+                                    width={4}
+                                    value={tempoEntregaMinimo}
+				                    onChange={e => settempoEntregaMinimo(e.target.value)}
                                 >
-                                    <InputMask 
-                                        value={tempoEntregaMinimo}
-				                        onChange={e => settempoEntregaMinimo(e.target.value)}
-                                    /> 
+                                 
                                 </Form.Input>
 
                                 <Form.Input
                                     fluid
                                     label='Tempo de Entrega Máximo'
                                     type="number"
-                                    width={6}
+                                    width={4}
+                                    value={tempoEntregaMaximo}
+				                    onChange={e => settempoEntregaMaximo(e.target.value)}
                                 >
-                                    <InputMask 
-                                        value={tempoEntregaMaximo}
-				                        onChange={e => settempoEntregaMaximo(e.target.value)}
-                                    /> 
+                                
                                 </Form.Input>
 
                             </Form.Group>
@@ -187,4 +188,4 @@ export default function FormProduto () {
     );
 
 }
-}
+
