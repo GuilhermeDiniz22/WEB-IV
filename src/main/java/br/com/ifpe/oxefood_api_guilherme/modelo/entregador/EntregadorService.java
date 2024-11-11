@@ -1,5 +1,6 @@
 package br.com.ifpe.oxefood_api_guilherme.modelo.entregador;
 
+import br.com.ifpe.oxefood_api_guilherme.modelo.cliente.Cliente;
 import br.com.ifpe.oxefood_api_guilherme.modelo.produto.Produto;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,15 @@ public class EntregadorService {
 
     public Entregador obterPorID(Long id) {
         return entregadorRepository.findById(id).get();
+    }
+
+    @Transactional
+    public void delete(Long id) {
+
+        Entregador entregador = entregadorRepository.findById(id).get();
+        entregador.setHabilitado(Boolean.FALSE);
+        entregador.setVersao(entregador.getVersao() + 1);
+
+        entregadorRepository.save(entregador);
     }
 }

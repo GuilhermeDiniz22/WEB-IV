@@ -43,4 +43,14 @@ public class ProdutoService {
 
        produtoRepository.save(produto);
     }
+
+    @Transactional
+    public void delete(Long id) {
+
+        Produto produto = produtoRepository.findById(id).get();
+        produto.setHabilitado(Boolean.FALSE);
+        produto.setVersao(produto.getVersao() + 1);
+
+        produtoRepository.save(produto);
+    }
 }

@@ -46,4 +46,15 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
+    @Transactional
+    public void delete(Long id) {
+
+        Cliente cliente = clienteRepository.findById(id).get();
+        cliente.setHabilitado(Boolean.FALSE);
+        cliente.setVersao(cliente.getVersao() + 1);
+
+        clienteRepository.save(cliente);
+    }
+
+
 }
