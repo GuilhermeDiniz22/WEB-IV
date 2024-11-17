@@ -9,10 +9,10 @@ export default function FormEntregador () {
 
    const [nome, setNome] = useState();
    const [cpf, setCpf] = useState();
-   const [rg, setRg] = useState();
    const [dataNascimento, setdataNascimento] = useState();
    const [foneCelular, setfoneCelular] = useState();
    const [qtdEntregasRealizadas, setqtdEntregasRealizadas] = useState();
+   const [rg, setRg] = useState();
    const [valorFrete, setvalorFrente] = useState();
    const [enderecoNumero, setenderecoNumero] = useState();
    const [enderecoBairro, setenderecoBairro] = useState();
@@ -29,9 +29,9 @@ export default function FormEntregador () {
                    setIdEntregador(response.data.id)
                    setNome(response.data.nome)
                    setCpf(response.data.cpf)
-                   setRg(response.data.rg)
                    setfoneCelular(response.data.foneCelular)
                    setqtdEntregasRealizadas(response.data.qtdEntregasRealizadas)
+                   setRg(response.data.rg)
                    setdataNascimento(formatarData(response.data.dataNascimento))
                    setvalorFrente(response.data.valorFrete)
                    setenderecoBairro(response.data.enderecoBairro)
@@ -49,10 +49,10 @@ export default function FormEntregador () {
     let entregadorRequest = {
         nome: nome,
          cpf: cpf,
-         rg: rg,
          dataNascimento: dataNascimento,
          foneCelular: foneCelular,
          qtdEntregasRealizadas : qtdEntregasRealizadas,
+         rg: rg,
          valorFrete : valorFrete,
          enderecoNumero : enderecoNumero,
          enderecoBairro : enderecoBairro,
@@ -135,16 +135,6 @@ function formatarData(dataParam) {
                             
                             <Form.Group>
 
-                                <Form.Input
-                                    fluid
-                                    label='RG'
-                                    mask="9.999.999"
-                                    width={4}>
-                                    <InputMask 
-                                        value={rg}
-				                        onChange={e => setRg(e.target.value)}
-                                    /> 
-                                </Form.Input>
 
                                 <Form.Input
                                     fluid
@@ -185,6 +175,17 @@ function formatarData(dataParam) {
 
                                 <Form.Input
                                     fluid
+                                    label='RG'
+                                    mask="9.999.999"
+                                    width={4}>
+                                    <InputMask 
+                                        value={rg}
+				                        onChange={e => setRg(e.target.value)}
+                                    /> 
+                                </Form.Input>
+
+                                <Form.Input
+                                    fluid
                                     label='Valor Frete'
                                     width={4}
                                 >
@@ -193,7 +194,11 @@ function formatarData(dataParam) {
 				                        onChange={e => setvalorFrente(e.target.value)}
                                     /> 
                                 </Form.Input>
+                            
 
+                            </Form.Group>
+
+                            <Form.Group>
                                 <Form.Input
                                     fluid
                                     label='Endereço Numero'
@@ -248,7 +253,6 @@ function formatarData(dataParam) {
 				                        onChange={e => setenderecoUf(e.target.value)}
                                     /> 
                                 </Form.Input>
-
                             </Form.Group>
                         
                         </Form>

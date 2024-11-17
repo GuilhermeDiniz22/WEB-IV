@@ -119,8 +119,7 @@ return(
                                                color='red'
                                                title='Clique aqui para remover este cliente'
                                                icon
-                                               onClick={e => confirmaRemover}
-                                               >
+                                               onClick={e => confirmaRemover(cliente.id)}>
                                                    <Icon name='trash' />
                                            </Button>
 

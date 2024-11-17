@@ -45,11 +45,11 @@ export default function FormProduto () {
 
     if (idProduto !== null) { //Alteração:
         axios.put("http://localhost:8080/api/produto/" + idProduto, produtoRequest)
-        .then((response) => { console.log('Cliente alterado com sucesso.') })
+        .then((response) => { console.log('Produto alterado com sucesso.') })
         .catch((error) => { console.log('Erro ao alter um cliente.') })
     } else { //Cadastro:
         axios.post("http://localhost:8080/api/produto", produtoRequest)
-        .then((response) => { console.log('Cliente cadastrado com sucesso.') })
+        .then((response) => { console.log('Produto cadastrado com sucesso.') })
         .catch((error) => { console.log('Erro ao incluir o cliente.') })
     }
 
@@ -92,12 +92,9 @@ export default function FormProduto () {
                                 <Form.Input
                                     required
                                     fluid
-                                    label='Titulo'>
-                                    <InputMask
-                                        required
-                                        value={titulo}
-				                        onChange={e => setTitulo(e.target.value)}
-                                    /> 
+                                    label='Titulo'
+                                    value={titulo}
+				                    onChange={e => setTitulo(e.target.value)}>
                                 </Form.Input>
 
                             </Form.Group>
@@ -107,21 +104,17 @@ export default function FormProduto () {
                                 <Form.Input
                                     fluid
                                     label='Descrição'
-                                    width={6}>
-                                    <InputMask 
-                                        value={descricao}
-				                        onChange={e => setDescricao(e.target.value)}
-                                    /> 
+                                    width={6}
+                                    value={descricao}
+				                    onChange={e => setDescricao(e.target.value)}>  
                                 </Form.Input>
 
                                 <Form.Input
                                     fluid
                                     label='Valor Unitário'
-                                    width={6}>
-                                    <InputMask 
-                                        value={valorUnitario}
-				                        onChange={e => setvalorUnitario(e.target.value)}
-                                    /> 
+                                    width={6}
+                                    value={valorUnitario}
+				                    onChange={e => setvalorUnitario(e.target.value)}>
                                 </Form.Input>
 
                                 <Form.Input
