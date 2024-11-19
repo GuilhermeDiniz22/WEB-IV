@@ -9,6 +9,8 @@ import ListCliente from './views/cliente/ListCliente';
 import { Link } from 'react-router-dom';
 import ListProduto from './views/produto/ListProduto';
 import ListEntregador from './views/entregador/ListEntregador';
+import FormConfiguracaoSistema from './views/configuracaoSistema/FormConfiguracaoSistema';
+import ListConfiguracaoSistema from './views/configuracaoSistema/ListConfiguracaoSistema';
 
 
 function Rotas() {
@@ -22,6 +24,8 @@ function Rotas() {
                 <Route path="list-entregador" element={ <ListEntregador/> } />
                 <Route path="form-produto" element={ <FormProduto/> } /> 
                 <Route path="form-entregador" element={ <FormEntregador/> } />
+                <Route path="form-configuracao" element={ <FormConfiguracaoSistema/> } />
+                <Route path="list-configuracao" element={ <ListConfiguracaoSistema/> } />
             </Routes>
         </>
     )
