@@ -13,6 +13,9 @@ export default function FormProduto () {
    const [valorUnitario, setvalorUnitario] = useState();
    const [tempoEntregaMinimo, settempoEntregaMinimo] = useState();
    const [tempoEntregaMaximo, settempoEntregaMaximo] = useState();
+   const [listaCategoria, setListaCategoria] = useState([]);
+   const [idCategoria, setIdCategoria] = useState();
+
 
    const { state } = useLocation();
    const [idProduto, setIdProduto] = useState();
@@ -28,13 +31,27 @@ export default function FormProduto () {
                    setvalorUnitario(response.data.valorUnitario)
                    settempoEntregaMinimo(response.data.tempoEntregaMinimo)
                    settempoEntregaMaximo(response.data.tempoEntregaMaximo)
+                   setIdCategoria(response.data.categoria.id)
+
+                   
+                   
     })
+    
+
 }
+
+axios.get("http://localhost:8080/api/categoria-produto")
+       .then((response) => {
+           const dropDownCategorias = response.data.map(c => ({ text: c.descricao, value: c.id }));
+           setListaCategoria(dropDownCategorias);
+       }) 
+
 }, [state])
 
    function salvar() {
 
     let produtoRequest = {
+        idCategoria: idCategoria,
         codigo: codigo,
          titulo: titulo,
          descricao: descricao,
@@ -46,11 +63,11 @@ export default function FormProduto () {
     if (idProduto !== null) { //Alteração:
         axios.put("http://localhost:8080/api/produto/" + idProduto, produtoRequest)
         .then((response) => { console.log('Produto alterado com sucesso.') })
-        .catch((error) => { console.log('Erro ao alter um cliente.') })
+        .catch((error) => { console.log('Erro ao alterar um produto.') })
     } else { //Cadastro:
         axios.post("http://localhost:8080/api/produto", produtoRequest)
         .then((response) => { console.log('Produto cadastrado com sucesso.') })
-        .catch((error) => { console.log('Erro ao incluir o cliente.') })
+        .catch((error) => { console.log('Erro ao incluir o produto.') })
     }
 
 }
@@ -96,6 +113,20 @@ export default function FormProduto () {
                                     value={titulo}
 				                    onChange={e => setTitulo(e.target.value)}>
                                 </Form.Input>
+
+                                <Form.Select
+                                    required
+                                    fluid
+                                    tabIndex='3'
+                                    placeholder='Selecione'
+                                    label='Categoria'
+                                    options={listaCategoria}
+                                    value={idCategoria}
+                                    onChange={(e,{value}) => {
+                                        setIdCategoria(value)
+                                    }}
+                                />
+
 
                             </Form.Group>
                             

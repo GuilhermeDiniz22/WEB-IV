@@ -11,6 +11,8 @@ import ListProduto from './views/produto/ListProduto';
 import ListEntregador from './views/entregador/ListEntregador';
 import FormConfiguracaoSistema from './views/configuracaoSistema/FormConfiguracaoSistema';
 import ListConfiguracaoSistema from './views/configuracaoSistema/ListConfiguracaoSistema';
+import ListCategoriaProduto from './views/categoriaProduto/ListCategoriaProduto';
+import FormCategoriaProduto from './views/categoriaProduto/FormCategoriaProduto';
 
 
 function Rotas() {
@@ -26,6 +28,8 @@ function Rotas() {
                 <Route path="form-entregador" element={ <FormEntregador/> } />
                 <Route path="form-configuracao" element={ <FormConfiguracaoSistema/> } />
                 <Route path="list-configuracao" element={ <ListConfiguracaoSistema/> } />
+                <Route path="list-categoria-produto" element={ <ListCategoriaProduto/> } />
+                <Route path="form-categoria-produto" element={ <FormCategoriaProduto/> } />
             </Routes>
         </>
     )

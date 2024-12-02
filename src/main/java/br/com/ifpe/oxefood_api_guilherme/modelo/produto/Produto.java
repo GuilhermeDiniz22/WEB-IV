@@ -1,9 +1,8 @@
 package br.com.ifpe.oxefood_api_guilherme.modelo.produto;
 
+import br.com.ifpe.oxefood_api_guilherme.modelo.categoriaProduto.CategoriaProduto;
 import br.com.ifpe.oxefood_api_guilherme.util.entity.EntidadeAuditavel;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -17,6 +16,9 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("habilitado = true")
 @Table(name = "produto")
 public class Produto extends EntidadeAuditavel {
+
+    @ManyToOne
+    private CategoriaProduto categoria;
 
     @Column
     private String codigo;

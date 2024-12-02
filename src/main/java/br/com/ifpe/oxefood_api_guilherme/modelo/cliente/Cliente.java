@@ -1,11 +1,10 @@
 package br.com.ifpe.oxefood_api_guilherme.modelo.cliente;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import br.com.ifpe.oxefood_api_guilherme.util.entity.EntidadeAuditavel;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +22,9 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("habilitado = true")
 @Table(name = "cliente")
 public class Cliente extends EntidadeAuditavel  {
+
+    @OneToMany(mappedBy = "cliente", orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<EnderecoCliente> enderecos;
 
     @Column
     private String nome;

@@ -71,6 +71,20 @@ export default function MenuSistema (props) {
                    to='/list-configuracao'
                />
 
+                <Menu.Item
+                   name='novo categoria produto'
+                   active={props.tela === 'categoria'}
+                   as={Link}
+                   to='/form-categoria-produto'
+               />
+
+                <Menu.Item
+                   name='categorias produto'
+                   active={props.tela === 'categoria'}
+                   as={Link}
+                   to='/list-categoria-produto'
+               />
+
            </Menu>
        </>
    )
