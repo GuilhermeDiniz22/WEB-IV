@@ -17,6 +17,6 @@ import org.hibernate.annotations.SQLRestriction;
 @Table(name = "CategoriaProduto")
 public class CategoriaProduto extends EntidadeAuditavel {
 
-    @Column
+    @Column(nullable = false)
     private String descricao;
 }

@@ -4,6 +4,7 @@ import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import MenuSistema from "../../MenuSistema";
+import { notifyError, notifySuccess } from '../../views/util/Util';
 
 export default function FormCategoriaProduto () {
 
@@ -32,16 +33,29 @@ export default function FormCategoriaProduto () {
     }
     console.log(catProdutoRequest)
 
-    if (idCategoria != null) { //Alteração:
-        axios.put("http://localhost:8080/api/categoria-produto/" + idCategoria, catProdutoRequest)
-        .then((response) => { console.log('Categoria alterada com sucesso.') })
-        .catch((error) => { console.log('Erro ao alter um cliente.') })
-    } else { //Cadastro:
+    if (idCategoria != null) { 
+        axios.put("http://localhost:8080/api/categoria-produto" + idCategoria, catProdutoRequest)
+        .then((response) => { notifySuccess('Categoria alterada com sucesso.') })
+        .catch((error) => { if (error.response.data.errors != undefined) {
+            for (let i = 0; i < error.response.data.errors.length; i++) {
+                notifyError(error.response.data.errors[i].defaultMessage)
+         }
+ } else {
+     notifyError(error.response.data.message)
+ }
+    })
+    } else { 
         axios.post("http://localhost:8080/api/categoria-produto", catProdutoRequest)
-        .then((response) => { console.log('Categoria cadastrada com sucesso.') })
-        .catch((error) => { console.log('Erro ao incluir o cliente.') })
+        .then((response) => { notifySuccess('Categoria cadastrada com sucesso.') })
+        .catch((error) => {if (error.response.data.errors != undefined) {
+            for (let i = 0; i < error.response.data.errors.length; i++) {
+                notifyError(error.response.data.errors[i].defaultMessage)
+         }
+ } else {
+     notifyError(error.response.data.message)
+ }
+})
     }
-
 }
 
 function formatarData(dataParam) {

@@ -20,25 +20,25 @@ import java.time.LocalDate;
 @Table(name = "configuracaoSistema")
 public class ConfiguracaoSistema extends EntidadeAuditavel {
 
-    @Column
+    @Column(nullable = false)
     private String nomeEmpresa;
 
-    @Column
+    @Column(nullable = false)
     private String cnpj;
 
-    @Column
+    @Column(nullable = false)
     private String site;
 
-    @Column
+    @Column(nullable = false)
     private String emailContato;
 
-    @Column
+    @Column(nullable = false)
     private Long tempoMinimoAgendamentoPedidos;
 
     @Column
     private Boolean ligarAceitePedidos;
 
-    @Column
+    @Column(nullable = false)
     private LocalDate dataEntradaSistema;
 
 }

@@ -1,5 +1,6 @@
 package br.com.ifpe.oxefood_api_guilherme.modelo.cliente;
 
+import br.com.ifpe.oxefood_api_guilherme.exception.EntidadeNaoEncontradaException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,18 +25,26 @@ public class ClienteService {
 
     public Cliente obterPorID(Long id) {
 
-        return clienteRepository.findById(id).get();
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Cliente", id));
+
+        return cliente;
+
     }
 
 
     @Transactional
     public Cliente save(Cliente cliente) {
+        if (!cliente.getFoneFixo().startsWith("81") || !cliente.getFoneCelular().startsWith("81")) {
+            throw new IllegalArgumentException("Os números de telefone devem começar com o DDD 81.");
+        }
 
         cliente.setHabilitado(Boolean.TRUE);
         cliente.setVersao(1L);
         cliente.setDataCriacao(LocalDate.now());
         return clienteRepository.save(cliente);
     }
+
 
     @Transactional
     public void update(Long id, Cliente clienteAlterado) {

@@ -4,202 +4,177 @@ import InputMask from 'react-input-mask';
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 import MenuSistema from "../../MenuSistema";
 import { Link, useLocation } from "react-router-dom";
+import { notifyError, notifySuccess } from '../../views/util/Util';
 
-export default function FormConfiguracaoSistema () {
+export default function FormConfiguracaoSistema() {
+    const [nomeEmpresa, setNomeEmpresa] = useState('');
+    const [cnpj, setCnpj] = useState('');
+    const [site, setSite] = useState('');
+    const [emailContato, setEmailContato] = useState('');
+    const [tempoMinimoAgendamentoPedidos, setTempoMinimoAgendamentoPedidos] = useState('');
+    const [dataEntradaSistema, setDataEntradaSistema] = useState('');
+    const { state } = useLocation();
+    const [idConfiguracaoSistema, setIdConfiguracaoSistema] = useState(null);
 
-   const [nomeEmpresa, setnomeEmpresa] = useState();
-   const [cnpj, setCnpj] = useState();
-   const [site, setSite] = useState();
-   const [emailContato, setemailContato] = useState();
-   const [tempoMinimoAgendamentoPedidos, settempoMinimoAgendamentoPedidos] = useState();
-   const [dataEntradaSistema, setdataEntradaSistema] = useState();
-   const { state } = useLocation();
-   const [idConfiguracaoSistema, setidConfiguracaoSistema] = useState();
+    useEffect(() => {
+        if (state?.id) {
+            axios.get(`http://localhost:8080/api/configuracaosistema/${state.id}`)
+                .then((response) => {
+                    const data = response.data;
+                    setIdConfiguracaoSistema(data.id);
+                    setNomeEmpresa(data.nomeEmpresa);
+                    setCnpj(data.cnpj);
+                    setSite(data.site);
+                    setEmailContato(data.emailContato);
+                    setTempoMinimoAgendamentoPedidos(data.tempoMinimoAgendamentoPedidos);
+                    setDataEntradaSistema(formatarData(data.dataEntradaSistema));
+                })
+                .catch((error) => {
+                    console.error("Erro ao buscar configuração do sistema:", error);
+                });
+        }
+    }, [state]);
 
-   useEffect(() => {
-    if (state != null && state.id != null) {
-        axios.get("http://localhost:8080/api/configuracaosistema/" + state.id)
-    .then((response) => {
-                   setidConfiguracaoSistema(response.data.id)
-                   setnomeEmpresa(response.data.nomeEmpresa)
-                   setCnpj(response.data.cnpj)
-                   setSite(response.data.site)
-                   setemailContato(response.data.emailContato)
-                   settempoMinimoAgendamentoPedidos(response.data.tempoMinimoAgendamentoPedidos)
-                   setdataEntradaSistema(formatarData(response.data.dataEntradaSistema))
-    })
-}
-}, [state])
+    const salvar = () => {
+        const configuracaoSistemaRequest = {
+            nomeEmpresa : nomeEmpresa,
+            cnpj : cnpj,
+            site : site,
+            emailContato : emailContato,
+            tempoMinimoAgendamentoPedidos : tempoMinimoAgendamentoPedidos,
+            dataEntradaSistema : dataEntradaSistema
+        };
 
+        if (idConfiguracaoSistema != null) { 
+            axios.put("http://localhost:8080/api/configuracaosistema" + idConfiguracaoSistema, configuracaoSistemaRequest)
+            .then((response) => { notifySuccess('Configuração alterada com sucesso.') })
+            .catch((error) => { if (error.response.data.errors != undefined) {
+                for (let i = 0; i < error.response.data.errors.length; i++) {
+                    notifyError(error.response.data.errors[i].defaultMessage)
+             }
+     } else {
+         notifyError(error.response.data.message)
+     }
+        })
+        } else { 
+            axios.post("http://localhost:8080/api/configuracaosistema", configuracaoSistemaRequest)
+            .then((response) => { notifySuccess('Configuração cadastrada com sucesso.') })
+            .catch((error) => {if (error.response.data.errors != undefined) {
+                for (let i = 0; i < error.response.data.errors.length; i++) {
+                    notifyError(error.response.data.errors[i].defaultMessage)
+             }
+     } else {
+         notifyError(error.response.data.message)
+     }
+  })
+        }
+    };
 
-   function salvar() {
+    
 
-    let configuracaoSistemaRequest = {
-         nomeEmpresa: nomeEmpresa,
-         cnpj : cnpj,
-         site: site,
-         emailContato: emailContato,
-         tempoMinimoAgendamentoPedidos: tempoMinimoAgendamentoPedidos,
-         dataEntradaSistema : dataEntradaSistema
-    }
-
-    if (idConfiguracaoSistema != null) { //Alteração:
-        axios.put("http://localhost:8080/api/configuracaosistema/" + idConfiguracaoSistema, configuracaoSistemaRequest)
-        .then((response) => { console.log('Configuração alterada com sucesso.') })
-        .catch((error) => { console.log('Erro ao alter uma Configuração.') })
-    } else { //Cadastro:
-        axios.post("http://localhost:8080/api/configuracaosistema", configuracaoSistemaRequest)
-        .then((response) => { console.log('Configuração cadastrada com sucesso.') })
-        .catch((error) => { console.log('Erro ao incluir a Configuração.') })
-    }
-}
-
-function formatarData(dataParam) {
-
-    if (dataParam === null || dataParam === '' || dataParam === undefined) {
-        return ''
-    }
-
-    let arrayData = dataParam.split('-');
-    return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
-}
-
-
+    function formatarData(dataParam) {
+        if (dataParam === null || dataParam === '' || dataParam === undefined) {
+            return '';
+        }
+        let arrayData = dataParam.split('-');
+        return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
+    };
 
     return (
-
         <div>
-
-        <MenuSistema tela={'configuracao'} />
-
-            <div style={{marginTop: '3%'}}>
-
-            <Container textAlign='justified' >
-
-                { idConfiguracaoSistema === undefined &&
-                    <h2> <span style={{color: 'darkgray'}}> Configuração &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro</h2>
-                }
-                { idConfiguracaoSistema != undefined &&
-                    <h2> <span style={{color: 'darkgray'}}> Configuração &nbsp;<Icon name='angle double right' size="small" /> </span> Alteração</h2>
-                }
-
-            <Divider />
-
-                    <div style={{marginTop: '4%'}}>
-
+            <MenuSistema tela="configuracao" />
+            <div style={{ marginTop: '3%' }}>
+                <Container textAlign="justified">
+                    <h2>
+                        <span style={{ color: 'darkgray' }}>
+                            Configuração&nbsp;
+                            <Icon name="angle double right" size="small" />
+                        </span>
+                        {idConfiguracaoSistema ? "Alteração" : "Cadastro"}
+                    </h2>
+                    <Divider />
+                    <div style={{ marginTop: '4%' }}>
                         <Form>
-
-                            <Form.Group widths='equal'>
-
+                            <Form.Group widths="equal">
                                 <Form.Input
                                     required
                                     fluid
-                                    label='Nome da Empresa'
+                                    label="Nome da Empresa"
                                     maxLength="100"
                                     value={nomeEmpresa}
-			                        onChange={e => setnomeEmpresa(e.target.value)}
-
+                                    onChange={e => setNomeEmpresa(e.target.value)}
                                 />
-
-                                <Form.Input
-                                    required
-                                    fluid
-                                    label='CNPJ'>
+                                <Form.Input required fluid label="CNPJ">
                                     <InputMask
                                         required
                                         value={cnpj}
                                         mask="99.999.999/9999-99"
-				                        onChange={e => setCnpj(e.target.value)}
-                                    /> 
+                                        onChange={e => setCnpj(e.target.value)}
+                                    />
                                 </Form.Input>
-
                             </Form.Group>
-                            
                             <Form.Group>
-
-
-                                <Form.Input
-                                    fluid
-                                    label='Data Entrada Sistema'
-                                    width={4}>
-                                    <InputMask 
-                                        mask="99/99/9999" 
+                                <Form.Input fluid label="Data Entrada Sistema" width={4}>
+                                    <InputMask
+                                        mask="99/99/9999"
                                         maskChar={null}
                                         placeholder="Ex: 20/03/1985"
                                         value={dataEntradaSistema}
-				                        onChange={e => setdataEntradaSistema(e.target.value)}
-                                    /> 
+                                        onChange={e => setDataEntradaSistema(e.target.value)}
+                                    />
                                 </Form.Input>
-
                                 <Form.Input
                                     fluid
-                                    label='Site'
+                                    label="Site"
                                     width={4}
                                     value={site}
-				                    onChange={e => setSite(e.target.value)}
-                                >
-                                </Form.Input>
-
+                                    onChange={e => setSite(e.target.value)}
+                                />
                                 <Form.Input
                                     fluid
-                                    label='Tempo Minimo Agendamento'
+                                    label="Tempo Mínimo Agendamento"
                                     width={4}
                                     type="number"
                                     value={tempoMinimoAgendamentoPedidos}
-				                    onChange={e => settempoMinimoAgendamentoPedidos(e.target.value)}
-                                >
-                            
-                                </Form.Input>
-
+                                    onChange={e => setTempoMinimoAgendamentoPedidos(e.target.value)}
+                                />
                                 <Form.Input
                                     fluid
-                                    label='Email'
+                                    label="Email"
                                     width={4}
                                     value={emailContato}
-				                    onChange={e => setemailContato(e.target.value)}>
-                                    
-                                </Form.Input>
-                            
-
+                                    onChange={e => setEmailContato(e.target.value)}
+                                />
                             </Form.Group>
-                        
                         </Form>
-                        
-                        <div style={{marginTop: '4%'}}>
-
+                        <div style={{ marginTop: '4%' }}>
                             <Button
                                 type="button"
                                 inverted
                                 circular
                                 icon
-                                labelPosition='left'
-                                color='orange'
+                                labelPosition="left"
+                                color="orange"
                             >
-                            <Icon name='reply' />
-                                <Link to={'/list-configuracao'}>Voltar</Link>
+                                <Icon name="reply" />
+                                <Link to="/list-configuracao">Voltar</Link>
                             </Button>
-                                
                             <Button
                                 inverted
                                 circular
                                 icon
-                                labelPosition='left'
-                                color='blue'
-                                floated='right'
-                                onClick={() => salvar()}
+                                labelPosition="left"
+                                color="blue"
+                                floated="right"
+                                onClick={salvar}
                             >
-                                <Icon name='save' />
+                                <Icon name="save" />
                                 Salvar
                             </Button>
-
                         </div>
-
                     </div>
-                    
                 </Container>
             </div>
         </div>
-
     );
-
 }

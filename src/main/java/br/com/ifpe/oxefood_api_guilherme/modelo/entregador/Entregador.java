@@ -19,46 +19,46 @@ import java.time.LocalDate;
 @Table(name = "entregador")
 public class Entregador extends EntidadeAuditavel {
 
-    @Column
+    @Column(nullable = false)
     private String nome;
 
-    @Column
+    @Column(nullable = false)
     private String cpf;
 
-    @Column
+    @Column(nullable = false)
     private String rg;
 
-    @Column
+    @Column(nullable = false)
     private LocalDate dataNascimento;
 
-    @Column
+    @Column(nullable = false)
     private String foneCelular;
 
-    @Column
+    @Column(nullable = false)
     private String foneFixo;
 
-    @Column
+    @Column(nullable = false)
     private Integer qtdEntregasRealizadas;
 
-    @Column
+    @Column(nullable = false)
     private Double valorFrete;
 
-    @Column
+    @Column(nullable = false)
     private String enderecoNumero;
 
-    @Column
+    @Column(nullable = false)
     private String enderecoBairro;
 
-    @Column
+    @Column(nullable = false)
     private String enderecoCidade;
 
-    @Column
+    @Column(nullable = false)
     private String enderecoCep;
 
-    @Column
+    @Column(nullable = false)
     private String enderecoUf;
             ;
-    @Column
+    @Column(nullable = false)
     private Boolean ativo;
 
 

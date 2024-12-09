@@ -1,5 +1,6 @@
 package br.com.ifpe.oxefood_api_guilherme.modelo.produto;
 
+import br.com.ifpe.oxefood_api_guilherme.exception.ProdutoException;
 import br.com.ifpe.oxefood_api_guilherme.modelo.cliente.Cliente;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ public class ProdutoService {
     @Transactional
     public Produto save(Produto produto) {
 
+        if(produto.getValorUnitario() < 100){
+            throw new ProdutoException(ProdutoException.MSG_VALOR_MINIMO_PRODUTO);
+        }
+
         produto.setHabilitado(Boolean.TRUE);
         produto.setVersao(1L);
         produto.setDataCriacao(LocalDate.now());
@@ -33,6 +38,11 @@ public class ProdutoService {
 
     @Transactional
     public void update(Long id, Produto produtoAlterado){
+
+        if(produtoAlterado.getValorUnitario() < 100){
+            throw new ProdutoException(ProdutoException.MSG_VALOR_MINIMO_PRODUTO);
+        }
+        
        Produto produto =  produtoRepository.findById(id).get();
        produto.setCategoria(produtoAlterado.getCategoria());
        produto.setCodigo(produtoAlterado.getCodigo());
