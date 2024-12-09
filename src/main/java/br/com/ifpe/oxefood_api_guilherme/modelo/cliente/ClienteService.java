@@ -1,6 +1,7 @@
 package br.com.ifpe.oxefood_api_guilherme.modelo.cliente;
 
 import br.com.ifpe.oxefood_api_guilherme.exception.EntidadeNaoEncontradaException;
+import br.com.ifpe.oxefood_api_guilherme.modelo.acesso.UsuarioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,10 @@ import java.util.List;
 
 @Service
 public class ClienteService {
+
+    @Autowired
+    private UsuarioService usuarioService;
+
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -35,6 +40,9 @@ public class ClienteService {
 
     @Transactional
     public Cliente save(Cliente cliente) {
+
+        usuarioService.save(cliente.getUsuario());
+
         if (!cliente.getFoneFixo().startsWith("81") || !cliente.getFoneCelular().startsWith("81")) {
             throw new IllegalArgumentException("Os números de telefone devem começar com o DDD 81.");
         }
